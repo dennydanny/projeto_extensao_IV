@@ -13,7 +13,7 @@ num_6_2 = Annotated[Decimal, 6]
 initpk = Annotated[int, mapped_column(primary_key=True)]
 timestamp = Annotated[datetime.datetime, mapped_column(nullable=False)]
 
-class BaseModel(DeclarativeBase):
+class DefaultModel(DeclarativeBase):
 
     registry = registry(
         type_annotation_map = {
