@@ -64,8 +64,8 @@ class SalaController:
         #         "description": "Internal Error",
         #         "error": str(e)
         #     })
-        return self.json.return_format_data(response)
-
+        #return self.json.return_format_data(response)
+        return response
 
     def slct_by_id_sala_controller(self, id: int) -> str:
         return self.ctrl.slct_by_id_sala_service(id=id)

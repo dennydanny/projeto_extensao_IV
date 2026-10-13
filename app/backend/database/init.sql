@@ -56,7 +56,7 @@ CREATE TABLE professor (
 
 CREATE TABLE sala (
 	id int primary key auto_increment,
-	numero_nome varchar(20) not null,
+	nome varchar(20) not null,
 	limite_alunos int not null,
 	fk_tipo_sala int not null,	
 	constraint fk_tipo_sala foreign key (fk_tipo_sala) references tipo_sala(id),

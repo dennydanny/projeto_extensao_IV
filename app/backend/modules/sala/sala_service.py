@@ -34,11 +34,11 @@ class SalaService:
         for d in data:
             normalized_data.append({
                 "id": d.id,
-                "nome_sala": d.numero_nome,
-                # "quantidade_alunos": d.limite_alunos,
-                # "tipo_sala": d.tipo_sala
+                "nome_sala": d.nome,
+                "quantidade_alunos": d.limite_alunos,
+                "tipo_sala": d.tipo_sala
             })
-        # return self.json.return_format_data(normalized_data)
-        return normalized_data
+            # print(d)
+        return self.json.return_format_data(normalized_data)
+        #return normalized_data
 
-    # def error_treatment(self, error_data: list) -> str:

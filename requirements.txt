@@ -3,3 +3,5 @@ dotenv
 pymysql
 argparse
 pytest
+typing_extensions
+datetime

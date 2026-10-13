@@ -1,7 +1,18 @@
 from ..base_repository import BaseRepository as Br
-
+from sqlalchemy import table, column
 
 class TipoSalaRepository(Br):
+
+    # model = table(
+    #     "tipo_sala",
+    #     column("id"),
+    #     column("nome"),
+    #     column("created_at"),
+    #     column("updated_at")
+    # )
+
+    def  __init__(self):
+        pass
 
     def insert(self, data: dict) -> None:
         stmt = "insert into tipo_sala (nome) values (:nome);"
