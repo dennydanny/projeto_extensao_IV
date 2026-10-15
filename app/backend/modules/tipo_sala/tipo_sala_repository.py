@@ -1,35 +1,35 @@
 from ..base_repository import BaseRepository as Br
-from sqlalchemy import table, column
+from sqlalchemy import select, insert, update, delete
+from .tipo_sala_model import TipoSala
+from .tipo_sala_dto import TipoSalaDTO
 
 class TipoSalaRepository(Br):
 
-    # model = table(
-    #     "tipo_sala",
-    #     column("id"),
-    #     column("nome"),
-    #     column("created_at"),
-    #     column("updated_at")
-    # )
+    def insert(self, data: TipoSalaDTO) -> None:
+        stmt = insert(TipoSala).values(
+            nome=data.nome
+        )
+        self.execute_and_commit_db_query(stmt=stmt, returnable=False)
 
-    def  __init__(self):
-        pass
+    def select(self) -> list | None:
+        stmt = select(TipoSala.id, TipoSala.nome)
+        return self.execute_db_query(stmt=stmt, returnable=True)
 
-    def insert(self, data: dict) -> None:
-        stmt = "insert into tipo_sala (nome) values (:nome);"
-        self.execute_and_commit_db_query(stmt=stmt, data=data)
+    def update(self, data: TipoSalaDTO, id: int) -> None:
+        stmt = update(TipoSala).where(TipoSala.id == id).values(
+            nome=data.nome
+        )
+        self.execute_db_query(stmt=stmt, returnable=False)
 
-    def select(self) -> list[dict]:
-        stmt = "select id, nome from tipo_sala;"
-        return self.execute_db_query(stmt=stmt)
+    def delete(self, id: int) -> None:
+        stmt = delete(TipoSala).where(TipoSala.id == id)
+        self.execute_db_query(stmt=stmt, returnable=True)
 
-    def update(self, data: dict) -> None:
-        stmt = "update tipo_sala set nome = :nome where id = :id;"
-        self.execute_and_commit_db_query(stmt=stmt, data=data)
-
-    def delete(self, data: dict) -> None:
-        stmt = "delete from tipo_sala where id = :id;"
-        self.execute_and_commit_db_query(stmt=stmt, data=data)
-
-    def select_by_id(self, data: dict) -> list[dict] | None:
-        stmt = stmt = "select id, nome from tipo_sala where id = :id;"
-        return self.execute_db_query(stmt=stmt, data=data)
+    def select_by_id(self, id: int) -> list | None:
+        stmt = select(
+            TipoSala.id,
+            TipoSala.nome
+        ).where(
+            TipoSala.id == id
+        )
+        return self.execute_db_query(stmt=stmt, returnable=True)

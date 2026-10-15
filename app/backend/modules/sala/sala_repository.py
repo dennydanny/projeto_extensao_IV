@@ -1,61 +1,57 @@
 from ..base_repository import BaseRepository
-from sqlalchemy import table, column, select, text
-from .sala_model import Sala 
+from sqlalchemy import select, insert, update, delete
+from .sala_model import Sala
+from ..tipo_sala.tipo_sala_model import TipoSala
+from .sala_dto import SalaDTO
 
 class SalaRepository(BaseRepository):
 
-    def __init__(self):
-        self.sala = table(
-            "sala",
-            column("id"),
-            column("nome"),
-            column("limite_alunos"),
-            column("fk_tipo_sala"),
-            column("created_at"),
-            column("updated_at"),
-            column("tipo_sala")
+    def select(self) -> list | None:
+        stmt = select(
+            Sala.id,
+            Sala.nome,
+            Sala.limite_alunos,
+            TipoSala.nome.label("tipo_sala")
+        ).join(
+            TipoSala
+        ).where(
+            TipoSala.id == Sala.fk_tipo_sala
+        ).order_by(
+            Sala.id
         )
-        # self.sala = Sala()
+        return self.execute_db_query(stmt=stmt, returnable=True).all()
 
-    def select(self) -> object:
-
-        stmt = (
-            select(self.sala.c.id, self.sala.c.nome, self.sala.c.limite_alunos, text('tipo_sala.nome as tipo_sala') ).join_from(
-                self.sala, self.sala.c.tipo_sala, self.sala.c.fk_tipo_sala == self.sala.c.tipo_sala.c.id)
+    def insert(self, data: SalaDTO) -> None:
+        stmt = insert(Sala).values(
+            nome=data.nome,
+            limite_alunos=data.limite_alunos,
+            fk_tipo_sala=data.fk_tipo_sala
         )
-        return self.execute_db_query(stmt=stmt)
+        self.execute_db_query(stmt=stmt, returnable=False)
 
-    def insert(self, data: dict) -> None:
-        stmt = """insert into sala (
-                    numero_nome,
-                    limite_alunos,
-                    fk_tipo_sala
-                ) values (
-                    :numero_nome,
-                    :limite_alunos,
-                    :fk_tipo_sala
-                );"""
-        self.execute_and_commit_db_query(stmt=stmt, data=data)
+    def update(self, data: SalaDTO, id: int) -> None:
+        stmt = update(Sala).where(Sala.id == id).values(
+            nome=data.nome,
+            limite_alunos=data.limite_alunos,
+            fk_tipo_sala=data.fk_tipo_sala
+        )
+        self.execute_db_query(stmt=stmt, returnable=False)
 
-    def update(self, data: dict) -> None:
-        stmt = """update sala 
-                    set numero_nome = :numero_nome,
-                    set limite_alunos = :limite_alunos,
-                    set fk_tipo_sala = :fk_tipo_sala
-                where id = :id;"""
-        self.execute_and_commit_db_query(stmt=stmt, data=data)
+    def delete(self, id: int) -> None:
+        stmt = delete(Sala).where(Sala.id == id)
+        self.execute_db_query(stmt=stmt, returnable=False)
 
-    def delete(self, data: dict) -> None:
-        stmt = """delete from sala where id = :id;"""
-        self.execute_and_commit_db_query(stmt=stmt, data=data)
-
-    def select_by_id(self, data: dict) -> None:
-        stmt = """select 
-                    s.id,
-                    s.numero_nome as nome_sala,
-                    s.limite_alunos,
-                    ts.nome as tipo_sala
-                from sala as s
-                join tipo_sala as ts on ts.id = s.fk_tipo_sala
-                where id = :id;"""
-        return self.execute_db_query(stmt=stmt)
+    def select_by_id(self, id: int) -> list | None:
+        stmt = select(
+            Sala.id,
+            Sala.nome,
+            Sala.limite_alunos,
+            TipoSala.nome.label("tipo_sala")
+        ).join(
+            TipoSala
+        ).where(
+            TipoSala.id == Sala.fk_tipo_sala
+        ).order_by(
+            Sala.id
+        ).where(Sala.id == id)
+        return self.execute_db_query(stmt=stmt, returnable=True).all()
