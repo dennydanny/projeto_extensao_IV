@@ -6,6 +6,8 @@ services:
     container_name: backend_proj_ext_quatro
     networks:
       - backend
+    ports:
+      - "8000:8000"
     tty: true
     init: true
     depends_on:
