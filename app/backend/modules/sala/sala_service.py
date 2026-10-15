@@ -15,7 +15,7 @@ class SalaService:
     def del_sala_service(self, id: int) -> None:
         self.serv.delete(id=id)
 
-    def slct_sala_service(self) -> list:
+    def slct_sala_service(self) -> list | None:
         data = self.serv.select()
         return self.__data_treatment(data)
 
@@ -23,7 +23,7 @@ class SalaService:
         data = self.serv.select_by_id(id=id)
         return self.__data_treatment(data)
 
-    def __data_treatment(self, data: list) -> list:
+    def __data_treatment(self, data: list) -> list | None:
         normalized_data = []
         for d in data:
             normalized_data.append({
