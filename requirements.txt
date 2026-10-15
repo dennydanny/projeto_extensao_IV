@@ -5,3 +5,7 @@ argparse
 pytest
 typing_extensions
 datetime
+fastapi
+uv
+fastapi[standard]
+pydantic
