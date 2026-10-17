@@ -1,24 +1,39 @@
 from ..base_repository import BaseRepository as Br
+from sqlalchemy import select, insert, update, delete
+from .especialidade_dto import EspecialidadeDTO
+from .especialidade_model import Especialidade
 
 
 class EspecialidadeRepository(Br):
 
-    def insert(self, data: dict) -> None:
-        stmt = "insert into especialidade (nome) values (:nome);"
-        self.execute_and_commit_db_query(stmt=stmt, data=data)
+    def insert(self, data: EspecialidadeDTO) -> None:
+        stmt = insert(Especialidade).values(nome=data.nome)
+        self.execute_and_commit_db_query(stmt=stmt, returnable=False)
 
-    def select(self) -> list[dict] | None:
-        stmt = "select id, nome from especialidade;"
-        return self.execute_db_query(stmt=stmt)
+    def select(self) -> list:
+        stmt = select(
+            Especialidade.id,
+            Especialidade.nome
+        )
+        return self.execute_db_query(stmt=stmt, returnable=True)
 
-    def update(self, data: dict) -> None:
-        stmt = "update especialidade set nome = :nome where id = :id;"
-        self.execute_and_commit_db_query(stmt=stmt, data=data)
+    def update(self, data: EspecialidadeDTO, id: int) -> None:
+        stmt = update(Especialidade).where(
+                Especialidade.id == id
+            ).values(
+                nome=data.nome
+            )
+        self.execute_and_commit_db_query(stmt=stmt, returnable=False)
 
-    def delete(self, data: dict) -> None:
-        stmt = "delete from especialidade where id = :id;"
-        self.execute_and_commit_db_query(stmt=stmt, data=data)
+    def delete(self, id: int) -> None:
+        stmt = delete(Especialidade).where(Especialidade.id  == id)
+        self.execute_and_commit_db_query(stmt=stmt, returnable=False)
 
-    def select_by_id(self, data: dict) -> list[dict] | None:
-        stmt = "select id, nome from especialidade where id = :id;"
-        return self.execute_db_query(stmt=stmt, data=data)
+    def select_by_id(self, id: int) -> list:
+        stmt = select(
+            Especialidade.id,
+            Especialidade.nome
+        ).where(
+            Especialidade.id == id
+        )
+        return self.execute_db_query(stmt=stmt, returnable=True)
