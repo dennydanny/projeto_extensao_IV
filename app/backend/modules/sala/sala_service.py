@@ -7,23 +7,23 @@ class SalaService:
         self.serv = SalaRepository()
 
     def insrt_sala_service(self, data: SalaDTO) -> None:
-        self.serv.insert(data=data)
+        self.serv.insert(data)
 
     def updt_sala_service(self, data: SalaDTO, id: int) -> None:
-        self.serv.update(data=data, id=id)
+        self.serv.update(data, id)
 
     def del_sala_service(self, id: int) -> None:
-        self.serv.delete(id=id)
+        self.serv.delete(id)
 
     def slct_sala_service(self) -> list | None:
         data = self.serv.select()
         return self.__data_treatment(data)
 
     def slct_by_id_sala_service(self, id: int) -> None:
-        data = self.serv.select_by_id(id=id)
+        data = self.serv.select_by_id(id)
         return self.__data_treatment(data)
 
-    def __data_treatment(self, data: list) -> list | None:
+    def __data_treatment(self, data: SalaDTO) -> list | None:
         normalized_data = []
         for d in data:
             normalized_data.append({

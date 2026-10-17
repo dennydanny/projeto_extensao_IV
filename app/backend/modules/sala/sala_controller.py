@@ -11,7 +11,7 @@ class SalaController:
 
     def insrt_sala_controller(self, data: SalaDTO) -> JSONResponse:
         try:
-            self.ctrl.insrt_sala_service(data=data)
+            self.ctrl.insrt_sala_service(data)
         except IntegrityError:
             return JSONResponse(
                 status_code=HTTPStatus.BAD_REQUEST,
@@ -34,7 +34,7 @@ class SalaController:
 
     def updt_sala_controller(self, data: SalaDTO, id: int) -> JSONResponse:
         try:
-            self.ctrl.updt_sala_service(data=data, id=id)
+            self.ctrl.updt_sala_service(data, id)
         except IntegrityError:
             return JSONResponse(
                 status_code=HTTPStatus.BAD_REQUEST,
@@ -57,7 +57,7 @@ class SalaController:
 
     def del_sala_controller(self, id: int) -> JSONResponse:
         try:
-            self.ctrl.del_sala_service(id=id)
+            self.ctrl.del_sala_service(id)
         except IntegrityError:
             return JSONResponse(
                 status_code=HTTPStatus.BAD_REQUEST,
@@ -108,7 +108,7 @@ class SalaController:
 
     def slct_by_id_sala_controller(self, id: int) -> JSONResponse:
         try:
-            data = self.ctrl.slct_by_id_sala_service(id=id)
+            data = self.ctrl.slct_by_id_sala_service(id)
         except IntegrityError:
             return JSONResponse(
                 status_code=HTTPStatus.BAD_REQUEST,
