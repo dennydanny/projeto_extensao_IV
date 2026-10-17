@@ -1,32 +1,29 @@
 from .formato_repository import FormatoRepository
-from ..base_json.return_json import RetornoJson
+from .formato_dto import FormatoDTO
 
 class FormatoService:
 
     def __init__(self):
         self.repo = FormatoRepository()
-        self.json = RetornoJson()
 
-    def slct_formato_service(self) -> list[dict] | None:
+    def slct_formato_service(self) -> list:
         data = self.repo.select()
         return self.__normalize_data(data)
 
-    def insrt_formato_service(self, data: dict) -> None:
+    def insrt_formato_service(self, data: FormatoDTO) -> None:
         self.repo.insert(data)
 
-    def updt_formato_service(self, data: dict, id: int) -> None:
-        data["id"] = id
-        self.repo.update(data)
+    def updt_formato_service(self, data: FormatoDTO, id: int) -> None:
+        self.repo.update(data, id)
 
     def del_formato_service(self, id: int) -> None:
-        data = {"id": id}
-        self.repo.delete(data)
+        self.repo.delete(id)
 
-    def slct_by_id_formato_service(self, id: int) -> list[dict] | None:
-        data = {"id": id}
+    def slct_by_id_formato_service(self, id: int) -> list:
+        data = self.slct_by_id_formato_service(id)
         return self.__normalize_data(data)
 
-    def __normalize_data(self, data: object) -> list[dict] | None:
+    def __normalize_data(self, data: FormatoDTO) -> list:
         normalized_data = []
         for d in data:
             normalized_data.append({
