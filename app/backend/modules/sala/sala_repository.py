@@ -6,7 +6,7 @@ from .sala_dto import SalaDTO
 
 class SalaRepository(BaseRepository):
 
-    def select(self) -> list | None:
+    def select(self) -> list:
         stmt = select(
             Sala.id,
             Sala.nome,
@@ -41,7 +41,7 @@ class SalaRepository(BaseRepository):
         stmt = delete(Sala).where(Sala.id == id)
         self.execute_db_query(stmt=stmt, returnable=False)
 
-    def select_by_id(self, id: int) -> list | None:
+    def select_by_id(self, id: int) -> list:
         stmt = select(
             Sala.id,
             Sala.nome,
