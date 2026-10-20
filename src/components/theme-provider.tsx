@@ -25,19 +25,33 @@ export function ThemeProvider({
     () => (localStorage.getItem(storageKey) as Theme | null) ?? defaultTheme,
   )
 
-  useEffect(() => {
-    const root = document.documentElement
-    const media = window.matchMedia("(prefers-color-scheme: dark)")
-    const apply = () => {
-      const dark = theme === "dark" || (theme === "system" && media.matches)
-      root.classList.toggle("dark", dark)
-    }
-    apply()
-    if (theme === "system") {
-      media.addEventListener("change", apply)
-      return () => media.removeEventListener("change", apply)
-    }
-  }, [theme])
+ 
+useEffect(() => {
+  const root = document.documentElement
+  const media = window.matchMedia("(prefers-color-scheme: dark)")
+
+  const apply = () => {
+    const dark =
+      theme === "dark" || (theme === "system" && media.matches)
+
+    root.classList.toggle("dark", dark)
+
+    console.log(
+      "Tema selecionado:",
+      theme,
+      "| Classe dark:",
+      root.classList.contains("dark"),
+    )
+  }
+
+  apply()
+
+  if (theme === "system") {
+    media.addEventListener("change", apply)
+    return () => media.removeEventListener("change", apply)
+  }
+}, [theme])
+
 
   const setTheme = (next: Theme) => {
     localStorage.setItem(storageKey, next)
